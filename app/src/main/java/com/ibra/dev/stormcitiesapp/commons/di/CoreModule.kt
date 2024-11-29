@@ -6,6 +6,7 @@ import org.koin.dsl.module
 val coreModule = module {
     includes(
         networkModule,
+        databaseModule,
         HomeModule
     )
 }
