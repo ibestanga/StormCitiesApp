@@ -1,4 +1,4 @@
-package com.ibra.dev.stormcitiesapp.ui.theme
+package com.ibra.dev.stormcitiesapp.commons.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

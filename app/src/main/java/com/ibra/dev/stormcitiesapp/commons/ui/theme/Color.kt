@@ -1,4 +1,4 @@
-package com.ibra.dev.stormcitiesapp.ui.theme
+package com.ibra.dev.stormcitiesapp.commons.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

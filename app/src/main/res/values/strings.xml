@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StormCitiesApp</string>
+    <string name="base_url">https://gist.githubusercontent.com/</string>
 </resources>

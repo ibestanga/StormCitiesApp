@@ -1,4 +1,4 @@
-package com.ibra.dev.stormcitiesapp
+package com.ibra.dev.stormcitiesapp.commons.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,12 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibra.dev.stormcitiesapp.ui.theme.StormCitiesAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.StormCitiesAppTheme
+import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             StormCitiesAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -32,6 +36,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
+    val viewModel = koinViewModel<HomeViewModel>()
+    viewModel.getCitiesList()
     Text(
         text = "Hello $name!",
         modifier = modifier

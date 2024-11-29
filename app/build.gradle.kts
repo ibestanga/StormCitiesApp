@@ -10,6 +10,16 @@ android {
     namespace = "com.ibra.dev.stormcitiesapp"
     compileSdk = 35
 
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "mozilla/public-suffix-list.txt"
+            )
+        }
+    }
+
     defaultConfig {
         applicationId = "com.ibra.dev.stormcitiesapp"
         minSdk = 24
@@ -47,10 +57,12 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.android)
 
     // retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.coroutines.kotlin)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
 
@@ -58,7 +70,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.navigation.safe.args.gradle.plugin)
+//    implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
