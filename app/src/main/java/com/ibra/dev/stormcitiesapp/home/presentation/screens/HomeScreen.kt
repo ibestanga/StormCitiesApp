@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
+import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,7 +51,7 @@ fun CityListScreen(modifier: Modifier) {
 }
 
 @Composable
-fun CityItem(city: CityEntity) {
+fun CityItem(city: CityDto) {
     BasicText(
         text = "${city.name}, ${city.country}",
         modifier = Modifier.fillMaxWidth()

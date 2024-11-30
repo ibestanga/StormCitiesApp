@@ -7,6 +7,8 @@ import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSou
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSourceImpl
 import com.ibra.dev.stormcitiesapp.home.domain.repositories.HomeRepository
 import com.ibra.dev.stormcitiesapp.home.data.repositories.HomeRepositoryImpl
+import com.ibra.dev.stormcitiesapp.home.domain.usecases.GetAllCitiesPagedUseCaseImpl
+import com.ibra.dev.stormcitiesapp.home.presentation.usecase.GetAllCitiesPagedUseCase
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -16,10 +18,18 @@ private val dataModule = module {
     single { providesHomeApi(get()) }
     single<HomeRemoteDataSource> { HomeRemoteDataSourceImpl(get()) }
     single<HomeLocalDataSource> { HomeLocalDataSourceImpl(get()) }
-    single<HomeRepository> { HomeRepositoryImpl(
-        remoteDataSource = get(),
-        localDataSourceImpl = get()
-    ) }
+    single<HomeRepository> {
+        HomeRepositoryImpl(
+            remoteDataSource = get(),
+            localDataSourceImpl = get()
+        )
+    }
+}
+
+private val domainModule = module {
+    single<GetAllCitiesPagedUseCase> {
+        GetAllCitiesPagedUseCaseImpl(get())
+    }
 }
 
 private val presentationModule = module {
@@ -31,6 +41,7 @@ private val presentationModule = module {
 val HomeModule = module {
     includes(
         dataModule,
+        domainModule,
         presentationModule
     )
 }

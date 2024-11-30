@@ -13,14 +13,11 @@ interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSortedCities(cities: List<CityEntity>)
 
-    @Query("SELECT * FROM cities ORDER BY name ASC")
+    @Query("SELECT * FROM cities")
     fun getPagedCities(): PagingSource<Int, CityEntity>
 
     @Query("SELECT * FROM cities WHERE id = :id")
     suspend fun getCityById(id: Int): CityEntity
-
-    @Query("SELECT COUNT(*) FROM cities")
-    suspend fun getCityCount(): Int
 
     @Query("SELECT 1 FROM cities LIMIT 1")
     suspend fun hasAnyCity(): Boolean
