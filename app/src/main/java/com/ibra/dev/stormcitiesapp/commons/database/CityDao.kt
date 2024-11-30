@@ -1,6 +1,5 @@
 package com.ibra.dev.stormcitiesapp.commons.database
 
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
