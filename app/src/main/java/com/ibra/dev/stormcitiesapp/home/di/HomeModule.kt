@@ -7,8 +7,8 @@ import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSou
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSourceImpl
 import com.ibra.dev.stormcitiesapp.home.domain.repositories.HomeRepository
 import com.ibra.dev.stormcitiesapp.home.data.repositories.HomeRepositoryImpl
-import com.ibra.dev.stormcitiesapp.home.domain.usecases.GetAllCitiesPagedUseCaseImpl
-import com.ibra.dev.stormcitiesapp.home.presentation.usecase.GetAllCitiesPagedUseCase
+import com.ibra.dev.stormcitiesapp.home.domain.usecases.GetCitiesPagedUseCaseImpl
+import com.ibra.dev.stormcitiesapp.home.presentation.usecase.GetCitiesPagedUseCase
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -27,8 +27,8 @@ private val dataModule = module {
 }
 
 private val domainModule = module {
-    single<GetAllCitiesPagedUseCase> {
-        GetAllCitiesPagedUseCaseImpl(get())
+    single<GetCitiesPagedUseCase> {
+        GetCitiesPagedUseCaseImpl(get())
     }
 }
 

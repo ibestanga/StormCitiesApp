@@ -16,6 +16,9 @@ interface CityDao {
     @Query("SELECT * FROM cities")
     fun getPagedCities(): PagingSource<Int, CityEntity>
 
+    @Query("SELECT * FROM cities WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
+    fun getCitiesByName(query: String): PagingSource<Int, CityEntity>
+
     @Query("SELECT * FROM cities WHERE id = :id")
     suspend fun getCityById(id: Int): CityEntity
 

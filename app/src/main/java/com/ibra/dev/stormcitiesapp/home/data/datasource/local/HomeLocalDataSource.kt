@@ -7,6 +7,8 @@ interface HomeLocalDataSource {
 
     fun getPagedCities(): PagingSource<Int, CityEntity>
 
+    fun getCitiesByName(name:String) : PagingSource<Int, CityEntity>
+
     suspend fun insertSortedCities(sortedCities: List<CityEntity>)
 
     suspend fun hasCities(): Boolean

@@ -6,5 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    suspend fun fetchCities() : Flow<PagingData<CityEntity>>
+    suspend fun fetchCities(): Flow<PagingData<CityEntity>>
+
+    suspend fun filterByName(nameCity: String): Flow<PagingData<CityEntity>>
 }

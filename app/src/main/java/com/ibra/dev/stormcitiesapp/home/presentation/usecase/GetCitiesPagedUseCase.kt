@@ -4,7 +4,8 @@ import androidx.paging.PagingData
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import kotlinx.coroutines.flow.Flow
 
-interface GetAllCitiesPagedUseCase {
+interface GetCitiesPagedUseCase {
 
-    suspend fun invoke() : Flow<PagingData<CityDto>>
+    suspend fun invoke(): Flow<PagingData<CityDto>>
+    suspend fun invoke(query: String): Flow<PagingData<CityDto>>
 }

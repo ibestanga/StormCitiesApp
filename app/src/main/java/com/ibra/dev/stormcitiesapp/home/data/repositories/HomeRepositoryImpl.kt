@@ -31,13 +31,21 @@ class HomeRepositoryImpl(
         return getPagedCities()
     }
 
-    private fun getPagedCities(): Flow<PagingData<CityEntity>> {
+    override suspend fun filterByName(nameCity: String): Flow<PagingData<CityEntity>> {
+       return getPagedCities(nameCity)
+    }
+
+    private fun getPagedCities(nameCity: String? = null): Flow<PagingData<CityEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = true
             ),
-            pagingSourceFactory = { localDataSourceImpl.getPagedCities() }
+            pagingSourceFactory = {
+                nameCity?.let {
+                    localDataSourceImpl.getCitiesByName(it)
+                } ?: localDataSourceImpl.getPagedCities()
+            }
         ).flow
     }
 }
