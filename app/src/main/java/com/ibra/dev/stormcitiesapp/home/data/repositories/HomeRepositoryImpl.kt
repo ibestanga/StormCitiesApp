@@ -1,19 +1,22 @@
 package com.ibra.dev.stormcitiesapp.home.data.repositories
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.ibra.dev.stormcitiesapp.home.data.datasource.local.HomeLocalDataSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSource
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 import com.ibra.dev.stormcitiesapp.home.domain.repositories.HomeRepository
+import kotlinx.coroutines.flow.Flow
 
 class HomeRepositoryImpl(
     private val remoteDataSource: HomeRemoteDataSource,
     private val localDataSourceImpl: HomeLocalDataSource
 ) : HomeRepository {
-    override suspend fun getCitiesList(): List<CityEntity> {
-        val existingCities = localDataSourceImpl.getAllCities()
+    override suspend fun fetchCities(): Flow<PagingData<CityEntity>> {
         val sortedCities: List<CityEntity>
 
-        if (existingCities.isEmpty()) {
+        if (!localDataSourceImpl.hasCities()) {
             val rawCities = remoteDataSource.getCitiesList()
 
             sortedCities = if (rawCities.isSuccessful) {
@@ -25,6 +28,16 @@ class HomeRepositoryImpl(
             localDataSourceImpl.insertSortedCities(sortedCities)
         }
 
-        return localDataSourceImpl.getAllCities()
+        return getPagedCities()
+    }
+
+    private fun getPagedCities(): Flow<PagingData<CityEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true
+            ),
+            pagingSourceFactory = { localDataSourceImpl.getPagedCities() }
+        ).flow
     }
 }

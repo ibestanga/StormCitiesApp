@@ -1,9 +1,10 @@
 package com.ibra.dev.stormcitiesapp.home.domain.repositories
 
+import androidx.paging.PagingData
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
-import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
+import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    suspend fun getCitiesList() : List<CityEntity>
+    suspend fun fetchCities() : Flow<PagingData<CityEntity>>
 }

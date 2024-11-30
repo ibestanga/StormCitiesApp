@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ibra.dev.stormcitiesapp.commons.ui.theme.StormCitiesAppTheme
+import com.ibra.dev.stormcitiesapp.home.presentation.screens.CityListScreen
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,30 +25,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             StormCitiesAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    CityListScreen(Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    val viewModel = koinViewModel<HomeViewModel>()
-    viewModel.getCitiesList()
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StormCitiesAppTheme {
-        Greeting("Android")
     }
 }

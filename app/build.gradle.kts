@@ -69,6 +69,7 @@ dependencies {
     //local database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.paging.compose.android)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
 
@@ -82,6 +83,8 @@ dependencies {
     implementation(libs.androidx.material3)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
 
     //Koin
     implementation(libs.koin.android)
