@@ -21,6 +21,6 @@ interface CityDao {
     @Query("SELECT * FROM cities WHERE id = :id")
     suspend fun getCityById(id: Int): CityEntity
 
-    @Query("SELECT 1 FROM cities LIMIT 1")
-    suspend fun hasAnyCity(): Boolean
+    @Query("SELECT COUNT(*) FROM cities")
+    suspend fun getCityCount(): Int
 }

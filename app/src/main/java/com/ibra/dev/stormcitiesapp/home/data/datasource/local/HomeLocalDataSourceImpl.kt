@@ -19,5 +19,5 @@ class HomeLocalDataSourceImpl(
         dao.insertSortedCities(sortedCities)
     }
 
-    override suspend fun hasCities(): Boolean = dao.hasAnyCity()
+    override suspend fun hasCities(): Boolean = dao.getCityCount() > 0
 }

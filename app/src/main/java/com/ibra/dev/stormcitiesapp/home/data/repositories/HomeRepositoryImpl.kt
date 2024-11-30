@@ -1,5 +1,6 @@
 package com.ibra.dev.stormcitiesapp.home.data.repositories
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,19 +14,26 @@ class HomeRepositoryImpl(
     private val remoteDataSource: HomeRemoteDataSource,
     private val localDataSourceImpl: HomeLocalDataSource
 ) : HomeRepository {
-    override suspend fun fetchCities(): Flow<PagingData<CityEntity>> {
-        val sortedCities: List<CityEntity>
+    companion object {
+        const val TAG = "HomeRepositoryImpl"
+    }
 
+    override suspend fun fetchCities(): Flow<PagingData<CityEntity>> {
         if (!localDataSourceImpl.hasCities()) {
+            Log.i(TAG, "fetchCities: uptade online")
             val rawCities = remoteDataSource.getCitiesList()
 
-            sortedCities = if (rawCities.isSuccessful) {
+           val resultList = if (rawCities.isSuccessful) {
+                Log.i(TAG, "fetchCities: request success")
                 rawCities.body().orEmpty()
             } else {
+                Log.i(TAG, "fetchCities: request fail")
                 emptyList()
             }
 
-            localDataSourceImpl.insertSortedCities(sortedCities)
+            localDataSourceImpl.insertSortedCities(resultList).also {
+                Log.i(TAG, "fetchCities: insert result list")
+            }
         }
 
         return getPagedCities()
@@ -36,6 +44,7 @@ class HomeRepositoryImpl(
     }
 
     private fun getPagedCities(nameCity: String? = null): Flow<PagingData<CityEntity>> {
+        Log.i(TAG, "getPagedCities: pager flow")
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -43,8 +52,12 @@ class HomeRepositoryImpl(
             ),
             pagingSourceFactory = {
                 nameCity?.let {
-                    localDataSourceImpl.getCitiesByName(it)
-                } ?: localDataSourceImpl.getPagedCities()
+                    localDataSourceImpl.getCitiesByName(it).also {
+                        Log.i(TAG, "getPagedCities: get queryFilter")
+                    }
+                } ?: localDataSourceImpl.getPagedCities().also {
+                    Log.i(TAG, "getPagedCities: get citiesList")
+                }
             }
         ).flow
     }
