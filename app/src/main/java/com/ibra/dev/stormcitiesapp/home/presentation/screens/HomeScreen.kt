@@ -41,12 +41,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CityListScreen(modifier: Modifier) {
     val viewModel = koinViewModel<HomeViewModel>()
-    val cities = viewModel.pagingDataStateFlow.collectAsLazyPagingItems()
+    val cities = viewModel.citiesData.collectAsLazyPagingItems()
     val isLoading by viewModel.isLoginStateFlow.collectAsState()
-
-    LaunchedEffect(null) {
-        viewModel.getCitiesList()
-    }
 
     if (isLoading) {
         ShowLoading(modifier)

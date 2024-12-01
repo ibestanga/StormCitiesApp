@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.local.HomeLocalDataSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSource
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 import com.ibra.dev.stormcitiesapp.home.domain.repositories.HomeRepository
 import kotlinx.coroutines.flow.Flow
+import retrofit2.HttpException
 
 class HomeRepositoryImpl(
     private val remoteDataSource: HomeRemoteDataSource,
@@ -27,8 +29,7 @@ class HomeRepositoryImpl(
                 Log.i(TAG, "fetchCities: request success")
                 rawCities.body().orEmpty()
             } else {
-                Log.i(TAG, "fetchCities: request fail")
-                emptyList()
+               throw HttpException(rawCities)
             }
 
             localDataSourceImpl.insertSortedCities(resultList).also {
@@ -39,8 +40,17 @@ class HomeRepositoryImpl(
         return getPagedCities()
     }
 
-    override suspend fun filterByName(nameCity: String): Flow<PagingData<CityEntity>> {
-       return getPagedCities(nameCity)
+    override fun getCitiesPage(): PagingSource<Int, CityEntity> {
+
+       return localDataSourceImpl.getPagedCities().also {
+            Log.i(TAG, "getPagedCities: get citiesList")
+        }
+    }
+
+    override suspend fun filterByName(nameCity: String): PagingSource<Int, CityEntity> {
+        return localDataSourceImpl.getCitiesByName(nameCity).also {
+            Log.i(TAG, "getPagedCities: get queryFilter")
+        }
     }
 
     private fun getPagedCities(nameCity: String? = null): Flow<PagingData<CityEntity>> {

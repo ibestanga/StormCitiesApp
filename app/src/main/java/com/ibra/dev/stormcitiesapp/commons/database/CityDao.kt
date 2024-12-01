@@ -12,7 +12,7 @@ interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSortedCities(cities: List<CityEntity>)
 
-    @Query("SELECT * FROM cities")
+    @Query("SELECT * FROM cities ORDER BY name ASC")
     fun getPagedCities(): PagingSource<Int, CityEntity>
 
     @Query("SELECT * FROM cities WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
