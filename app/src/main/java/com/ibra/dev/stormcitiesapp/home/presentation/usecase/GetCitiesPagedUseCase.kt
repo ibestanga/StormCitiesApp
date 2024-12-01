@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface GetCitiesPagedUseCase {
 
     fun invoke(): Flow<PagingData<CityDto>>
-    suspend fun fetchTest(): Flow<PagingData<CityDto>>
-    suspend fun invoke(query: String): Flow<PagingData<CityDto>>
+    fun invoke(query: String): Flow<PagingData<CityDto>>
 }

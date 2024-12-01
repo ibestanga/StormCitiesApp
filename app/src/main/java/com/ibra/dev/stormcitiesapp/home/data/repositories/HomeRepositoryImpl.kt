@@ -1,16 +1,14 @@
 package com.ibra.dev.stormcitiesapp.home.data.repositories
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
+import com.ibra.dev.stormcitiesapp.home.data.CityPagingSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.local.HomeLocalDataSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSource
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 import com.ibra.dev.stormcitiesapp.home.domain.repositories.HomeRepository
 import kotlinx.coroutines.flow.Flow
-import retrofit2.HttpException
 
 class HomeRepositoryImpl(
     private val remoteDataSource: HomeRemoteDataSource,
@@ -18,57 +16,34 @@ class HomeRepositoryImpl(
 ) : HomeRepository {
     companion object {
         const val TAG = "HomeRepositoryImpl"
+        const val MAX_ITEMS = 10
+        const val PREFETCH_ITEMS = 3
     }
 
-    override suspend fun fetchCities(): Flow<PagingData<CityEntity>> {
-        if (!localDataSourceImpl.hasCities()) {
-            Log.i(TAG, "fetchCities: uptade online")
-            val rawCities = remoteDataSource.getCitiesList()
+    override fun getCitiesPage(): Flow<PagingData<CityEntity>> = executePagerFlow()
 
-           val resultList = if (rawCities.isSuccessful) {
-                Log.i(TAG, "fetchCities: request success")
-                rawCities.body().orEmpty()
-            } else {
-               throw HttpException(rawCities)
-            }
-
-            localDataSourceImpl.insertSortedCities(resultList).also {
-                Log.i(TAG, "fetchCities: insert result list")
-            }
+    private fun executePagerFlow() = Pager(
+        config = PagingConfig(
+            pageSize = MAX_ITEMS,
+            enablePlaceholders = false,
+            prefetchDistance = PREFETCH_ITEMS
+        ),
+        pagingSourceFactory = {
+            CityPagingSource(
+                localDataSourceImpl,
+                remoteDataSource
+            )
         }
+    ).flow
 
-        return getPagedCities()
-    }
-
-    override fun getCitiesPage(): PagingSource<Int, CityEntity> {
-
-       return localDataSourceImpl.getPagedCities().also {
-            Log.i(TAG, "getPagedCities: get citiesList")
+    override fun filterByName(nameCity: String): Flow<PagingData<CityEntity>> = Pager(
+        config = PagingConfig(
+            pageSize = PREFETCH_ITEMS,
+            enablePlaceholders = false,
+            prefetchDistance = PREFETCH_ITEMS
+        ),
+        pagingSourceFactory = {
+            localDataSourceImpl.getCitiesByName(nameCity)
         }
-    }
-
-    override suspend fun filterByName(nameCity: String): PagingSource<Int, CityEntity> {
-        return localDataSourceImpl.getCitiesByName(nameCity).also {
-            Log.i(TAG, "getPagedCities: get queryFilter")
-        }
-    }
-
-    private fun getPagedCities(nameCity: String? = null): Flow<PagingData<CityEntity>> {
-        Log.i(TAG, "getPagedCities: pager flow")
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true
-            ),
-            pagingSourceFactory = {
-                nameCity?.let {
-                    localDataSourceImpl.getCitiesByName(it).also {
-                        Log.i(TAG, "getPagedCities: get queryFilter")
-                    }
-                } ?: localDataSourceImpl.getPagedCities().also {
-                    Log.i(TAG, "getPagedCities: get citiesList")
-                }
-            }
-        ).flow
-    }
+    ).flow
 }

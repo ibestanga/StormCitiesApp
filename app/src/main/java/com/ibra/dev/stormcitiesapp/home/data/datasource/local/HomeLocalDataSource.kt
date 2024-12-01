@@ -5,7 +5,7 @@ import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 
 interface HomeLocalDataSource {
 
-    fun getPagedCities(): PagingSource<Int, CityEntity>
+    suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity>
 
     fun getCitiesByName(name:String) : PagingSource<Int, CityEntity>
 
