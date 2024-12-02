@@ -40,7 +40,7 @@ fun MyTopBar(
                     Icon(
                         imageVector = it,
                         contentDescription = "icon",
-                        tint = Color.White
+                        tint = Color.Black
                     )
                 }
             }

@@ -70,21 +70,10 @@ fun ShowResultMessage(
 }
 
 @Composable
-fun ShowEmptyMessage(modifier: Modifier) {
-    Box(
-        modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = stringResource(R.string.home_not_found_element))
-    }
-}
-
-@Composable
 fun ShowCitiesList(
     modifier: Modifier,
     cities: LazyPagingItems<CityDto>,
-    onNavigateLocationClick: (Int) -> Unit,
+    onNavigateLocationClick: (CityDto) -> Unit,
     onClickFavoriteIcon: (Int, Boolean) -> Unit
 
 ) {
@@ -163,12 +152,12 @@ fun OnlyFavoriteChip(onlyFavorite: Boolean, onClick: () -> Unit) {
 fun CityItem(
     modifier: Modifier,
     city: CityDto,
-    onNavigateLocationClick: (Int) -> Unit,
+    onNavigateLocationClick: (CityDto) -> Unit,
     onClickFavoriteIcon: (Int, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier.clickable {
-            onNavigateLocationClick(city.id)
+            onNavigateLocationClick(city)
         },
         shape = RoundedCornerShape(cornerRadius_12dp),
         elevation = CardDefaults.cardElevation(defaultElevation = padding_4dp),
