@@ -13,10 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.room.util.query
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.largePadding
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.mediumPadding
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.smallPadding
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_24dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_16dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_8dp
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -33,14 +32,14 @@ fun HomeScreen() {
     Scaffold(
         Modifier
             .fillMaxSize()
-            .padding(smallPadding),
+            .padding(padding_8dp),
         topBar = {
             Column(Modifier.fillMaxWidth()) {
-                Spacer(Modifier.height(largePadding))
+                Spacer(Modifier.height(padding_24dp))
                 SearchBar { query ->
                     viewModel.filterByName(query)
                 }
-                Spacer(Modifier.height(mediumPadding))
+                Spacer(Modifier.height(padding_16dp))
             }
         }
     ) { paddingValues ->

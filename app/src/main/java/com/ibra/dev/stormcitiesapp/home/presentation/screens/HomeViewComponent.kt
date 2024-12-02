@@ -4,12 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -30,10 +34,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.paging.compose.LazyPagingItems
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.mediumPadding
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.singlePadding
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.smallCornerRadius
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.smallPadding
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.cornerRadius_12dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_16dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_1dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_4dp
+import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_8dp
+import com.ibra.dev.stormcitiesapp.commons.ui.views.StandardText
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 
 
@@ -87,7 +93,7 @@ fun ShowCitiesList(
                 CityItem(
                     Modifier
                         .fillMaxWidth()
-                        .padding(singlePadding),
+                        .padding(padding_8dp),
                     city,
                     onClickFavoriteIcon
                 )
@@ -111,9 +117,9 @@ fun SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = mediumPadding,
-                    end = mediumPadding,
-                    top = mediumPadding,
+                    start = padding_16dp,
+                    end = padding_16dp,
+                    top = padding_16dp,
                 ),
             value = userDniText,
             onValueChange = {
@@ -148,17 +154,16 @@ fun CityItem(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(smallCornerRadius),
-        elevation = CardDefaults.outlinedCardElevation(
-            defaultElevation = smallPadding
-        )
+        shape = RoundedCornerShape(cornerRadius_12dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = padding_4dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
 
         var isFavorite by remember { mutableStateOf(city.isFavorite) }
 
         Box(
             modifier = Modifier
-                .padding(mediumPadding),
+                .padding(padding_16dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Row(
@@ -166,11 +171,15 @@ fun CityItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
             ) {
-                Text(
-                    text = "${city.name}, ${city.country}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+
+                Column {
+                    StandardText("${city.name}, ${city.country}")
+                    Spacer(Modifier.height(padding_1dp))
+                    StandardText(
+                        "Lat: ${city.latitude}, Long${city.longitude}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
 
                 IconButton(
                     onClick = {
@@ -179,9 +188,9 @@ fun CityItem(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Star,
-                        contentDescription = "Example Icon",
-                        tint = if (isFavorite) Color.Yellow else Color.Black
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = "Favorite Icon",
+                        tint = Color.Black
                     )
                 }
             }
