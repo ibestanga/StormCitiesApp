@@ -23,7 +23,7 @@ private val dataModule = module {
     single<HomeRepository> {
         HomeRepositoryImpl(
             remoteDataSource = get(),
-            localDataSourceImpl = get()
+            localDataSource = get()
         )
     }
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    fun getCitiesPage(): Flow<PagingData<CityEntity>>
+    fun getCitiesPage(onlyFavorite: Boolean): Flow<PagingData<CityEntity>>
 
     fun filterByName(nameCity: String): Flow<PagingData<CityEntity>>
 

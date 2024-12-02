@@ -1,12 +1,10 @@
 package com.ibra.dev.stormcitiesapp.home.data
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ibra.dev.stormcitiesapp.home.data.datasource.local.HomeLocalDataSource
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSource
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
-import com.ibra.dev.stormcitiesapp.home.data.repositories.HomeRepositoryImpl.Companion.TAG
 import kotlinx.coroutines.CompletableDeferred
 import retrofit2.HttpException
 
@@ -44,19 +42,15 @@ class CityPagingSource(
 
     private suspend fun fetchRemoteIfNecessary() {
         if (!localDataSource.hasCities()) {
-            Log.i(TAG, "fetchCities: uptade online")
             val rawCities = remoteLocalDataSource.getCitiesList()
 
             val resultList = if (rawCities.isSuccessful) {
-                Log.i(TAG, "fetchCities: request success")
                 rawCities.body().orEmpty()
             } else {
                 throw HttpException(rawCities)
             }
 
-            localDataSource.insertSortedCities(resultList).also {
-                Log.i(TAG, "fetchCities: insert result list")
-            }
+            localDataSource.insertCities(resultList)
         }
     }
 }

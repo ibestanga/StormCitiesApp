@@ -10,13 +10,16 @@ import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 @Dao
 interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSortedCities(cities: List<CityEntity>)
+    suspend fun insertCities(cities: List<CityEntity>)
 
     @Query("SELECT * FROM cities WHERE name >= 'A' AND name < 'B' ORDER BY name ASC LIMIT :limit OFFSET :offset")
     suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity>
 
     @Query("SELECT * FROM cities WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     fun getCitiesByName(query: String): PagingSource<Int, CityEntity>
+
+    @Query("SELECT * FROM cities WHERE isFavorite = true")
+    fun getOnLyFavoriteCity(): PagingSource<Int, CityEntity>
 
     @Query("SELECT * FROM cities WHERE id = :id")
     suspend fun getCityById(id: Int): CityEntity

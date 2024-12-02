@@ -9,7 +9,9 @@ interface HomeLocalDataSource {
 
     fun getCitiesByName(name: String): PagingSource<Int, CityEntity>
 
-    suspend fun insertSortedCities(sortedCities: List<CityEntity>)
+    fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity>
+
+    suspend fun insertCities(sortedCities: List<CityEntity>)
 
     suspend fun hasCities(): Boolean
 

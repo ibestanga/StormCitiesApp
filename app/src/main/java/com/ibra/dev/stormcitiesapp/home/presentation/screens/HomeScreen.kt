@@ -36,8 +36,11 @@ fun HomeScreen() {
         topBar = {
             Column(Modifier.fillMaxWidth()) {
                 Spacer(Modifier.height(padding_24dp))
-                SearchBar { query ->
-                    viewModel.filterByName(query)
+                SearchBar(onOnlyFavorite = { onlyFavorite ->
+                    viewModel.getCitiesList(onlyFavorite)
+                }
+                ) { query, onlyFavorite ->
+                    viewModel.filterByName(query, onlyFavorite)
                 }
                 Spacer(Modifier.height(padding_16dp))
             }
@@ -60,7 +63,7 @@ fun HomeScreen() {
                 Modifier.padding(paddingValues),
                 cities
             ) { id, isFavorite ->
-                viewModel.setCityLikeFavorite(id,isFavorite)
+                viewModel.setCityLikeFavorite(id, isFavorite)
             }
         }
     }

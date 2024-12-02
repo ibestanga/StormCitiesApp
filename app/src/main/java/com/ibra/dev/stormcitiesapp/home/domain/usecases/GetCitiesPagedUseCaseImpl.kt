@@ -12,13 +12,14 @@ import kotlinx.coroutines.flow.map
 class GetCitiesPagedUseCaseImpl(
     private val repository: HomeRepository
 ) : GetCitiesPagedUseCase {
-    override fun invoke(): Flow<PagingData<CityDto>> = repository.getCitiesPage().map { cities ->
-        cities.map { entity ->
-            entity.toDto()
+    override fun invoke(onlyFavorite: Boolean): Flow<PagingData<CityDto>> =
+        repository.getCitiesPage(onlyFavorite).map { cities ->
+            cities.map { entity ->
+                entity.toDto()
+            }
         }
-    }
 
-    override fun invoke(query: String): Flow<PagingData<CityDto>> {
+    override fun invoke(query: String, onlyFavorite: Boolean): Flow<PagingData<CityDto>> {
         return repository.filterByName(query).map { cities ->
             cities.map { entity ->
                 entity.toDto()

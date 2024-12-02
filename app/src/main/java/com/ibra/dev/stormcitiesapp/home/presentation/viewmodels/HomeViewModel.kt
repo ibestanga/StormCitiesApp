@@ -22,9 +22,9 @@ class HomeViewModel(
     private val _pagingDataStateFlow = MutableStateFlow<PagingData<CityDto>>(PagingData.empty())
     val pagingDataStateFlow: StateFlow<PagingData<CityDto>> = _pagingDataStateFlow
 
-    fun getCitiesList() {
+    fun getCitiesList(onlyFavorite: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            getCitiesUseCase.invoke()
+            getCitiesUseCase.invoke(onlyFavorite)
                 .cachedIn(viewModelScope)
                 .stateIn(
                     scope = viewModelScope,
@@ -36,9 +36,9 @@ class HomeViewModel(
         }
     }
 
-    fun filterByName(query: String) {
+    fun filterByName(query: String, onlyFavorite: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            getCitiesUseCase.invoke(query)
+            getCitiesUseCase.invoke(query, onlyFavorite)
                 .cachedIn(viewModelScope)
                 .stateIn(
                     scope = viewModelScope,

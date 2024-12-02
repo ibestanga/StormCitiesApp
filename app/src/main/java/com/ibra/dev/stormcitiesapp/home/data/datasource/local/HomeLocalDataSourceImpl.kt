@@ -7,16 +7,16 @@ import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 class HomeLocalDataSourceImpl(
     private val dao: CityDao
 ) : HomeLocalDataSource {
-    override suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity> {
-        return dao.getPagedCities(limit, offset)
-    }
+    override suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity> =
+        dao.getPagedCities(limit, offset)
 
-    override fun getCitiesByName(name: String): PagingSource<Int, CityEntity> {
-        return dao.getCitiesByName(name)
-    }
+    override fun getCitiesByName(name: String): PagingSource<Int, CityEntity> =
+        dao.getCitiesByName(name)
 
-    override suspend fun insertSortedCities(sortedCities: List<CityEntity>) {
-        dao.insertSortedCities(sortedCities)
+    override fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity> = dao.getOnLyFavoriteCity()
+
+    override suspend fun insertCities(sortedCities: List<CityEntity>) {
+        dao.insertCities(sortedCities)
     }
 
     override suspend fun hasCities(): Boolean = dao.getCityCount() > 0

@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
@@ -104,10 +103,11 @@ fun ShowCitiesList(
 
 @Composable
 fun SearchBar(
-    onSearchUser: (String) -> Unit,
+    onOnlyFavorite: (Boolean) -> Unit,
+    onSearchUser: (String, Boolean) -> Unit,
 ) {
-    var userDniText by remember { mutableStateOf("") }
-    var selected by remember { mutableStateOf(false) }
+    var queryText by remember { mutableStateOf("") }
+    var onlyFavorite by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -121,27 +121,32 @@ fun SearchBar(
                     end = padding_16dp,
                     top = padding_16dp,
                 ),
-            value = userDniText,
-            onValueChange = {
-                userDniText = it
-                onSearchUser(it)
+            value = queryText,
+            onValueChange = { query ->
+                queryText = query
+                onSearchUser(query, onlyFavorite)
             },
             singleLine = true,
             placeholder = {
                 Text(text = "escribe el nombre de la ciudad")
             },
         )
+
+        OnlyFavoriteChip(onlyFavorite) {
+            onlyFavorite = !onlyFavorite
+            onOnlyFavorite(onlyFavorite)
+        }
     }
 }
 
 @Composable
-fun OnlyFavoriteChip(selected: Boolean, onClick: () -> Unit) {
+fun OnlyFavoriteChip(onlyFavorite: Boolean, onClick: () -> Unit) {
     AssistChip(
         onClick = onClick,
         label = { Text("Solo favoritos") },
         colors = AssistChipDefaults.assistChipColors(
-            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
-            labelColor = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+            containerColor = if (onlyFavorite) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+            labelColor = if (onlyFavorite) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
         )
     )
 }

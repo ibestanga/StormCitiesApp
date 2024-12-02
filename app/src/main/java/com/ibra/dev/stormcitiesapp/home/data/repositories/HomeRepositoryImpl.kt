@@ -12,42 +12,52 @@ import kotlinx.coroutines.flow.Flow
 
 class HomeRepositoryImpl(
     private val remoteDataSource: HomeRemoteDataSource,
-    private val localDataSourceImpl: HomeLocalDataSource
+    private val localDataSource: HomeLocalDataSource
 ) : HomeRepository {
     companion object {
-        const val TAG = "HomeRepositoryImpl"
         const val MAX_ITEMS = 10
         const val PREFETCH_ITEMS = 3
     }
 
-    override fun getCitiesPage(): Flow<PagingData<CityEntity>> = executePagerFlow()
-
-    private fun executePagerFlow() = Pager(
-        config = PagingConfig(
+    private val pagingConfig by lazy {
+        PagingConfig(
             pageSize = MAX_ITEMS,
             enablePlaceholders = false,
             prefetchDistance = PREFETCH_ITEMS
-        ),
+        )
+    }
+
+    override fun getCitiesPage(onlyFavorite: Boolean): Flow<PagingData<CityEntity>> {
+        return if (onlyFavorite) getOnlyFavoritesCities() else executePagerFlow()
+    }
+
+    private fun getOnlyFavoritesCities(): Flow<PagingData<CityEntity>> {
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = {
+                localDataSource.getOnlyFavoriteCities()
+            }
+        ).flow
+    }
+
+    private fun executePagerFlow() = Pager(
+        config = pagingConfig,
         pagingSourceFactory = {
             CityPagingSource(
-                localDataSourceImpl,
+                localDataSource,
                 remoteDataSource
             )
         }
     ).flow
 
     override fun filterByName(nameCity: String): Flow<PagingData<CityEntity>> = Pager(
-        config = PagingConfig(
-            pageSize = PREFETCH_ITEMS,
-            enablePlaceholders = false,
-            prefetchDistance = PREFETCH_ITEMS
-        ),
+        config = pagingConfig,
         pagingSourceFactory = {
-            localDataSourceImpl.getCitiesByName(nameCity)
+            localDataSource.getCitiesByName(nameCity)
         }
     ).flow
 
     override suspend fun setFavoriteState(cityId: Int, isFavorite: Boolean) {
-        localDataSourceImpl.setFavoriteState(cityId, isFavorite)
+        localDataSource.setFavoriteState(cityId, isFavorite)
     }
 }

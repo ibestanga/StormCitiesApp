@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetCitiesPagedUseCase {
 
-    fun invoke(): Flow<PagingData<CityDto>>
-    fun invoke(query: String): Flow<PagingData<CityDto>>
+    fun invoke(onlyFavorite: Boolean): Flow<PagingData<CityDto>>
+    fun invoke(query: String, onlyFavorite: Boolean): Flow<PagingData<CityDto>>
 }
