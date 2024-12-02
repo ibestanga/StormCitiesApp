@@ -11,7 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -71,7 +72,9 @@ fun ShowEmptyMessage(modifier: Modifier) {
 @Composable
 fun ShowCitiesList(
     modifier: Modifier,
-    cities: LazyPagingItems<CityDto>
+    cities: LazyPagingItems<CityDto>,
+    onClickFavoriteIcon: (Int, Boolean) -> Unit
+
 ) {
     LazyColumn(
         modifier
@@ -85,7 +88,8 @@ fun ShowCitiesList(
                     Modifier
                         .fillMaxWidth()
                         .padding(singlePadding),
-                    city
+                    city,
+                    onClickFavoriteIcon
                 )
             }
         }
@@ -94,11 +98,10 @@ fun ShowCitiesList(
 
 @Composable
 fun SearchBar(
-    isError: Boolean = false,
-    errorMessage: String? = null,
     onSearchUser: (String) -> Unit,
 ) {
     var userDniText by remember { mutableStateOf("") }
+    var selected by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -117,36 +120,32 @@ fun SearchBar(
                 userDniText = it
                 onSearchUser(it)
             },
-            isError = isError,
             singleLine = true,
             placeholder = {
                 Text(text = "escribe el nombre de la ciudad")
             },
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = mediumPadding),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            errorMessage?.let {
-                Icon(
-                    imageVector = Icons.Rounded.Warning,
-                    contentDescription = "Error",
-                    tint = Color.Red
-                )
-                Text(
-                    text = errorMessage,
-                    color = Color.Red,
-                    modifier = Modifier.padding(mediumPadding)
-                )
-            }
-        }
     }
 }
 
 @Composable
-fun CityItem(modifier: Modifier, city: CityDto) {
+fun OnlyFavoriteChip(selected: Boolean, onClick: () -> Unit) {
+    AssistChip(
+        onClick = onClick,
+        label = { Text("Solo favoritos") },
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+            labelColor = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+        )
+    )
+}
+
+@Composable
+fun CityItem(
+    modifier: Modifier,
+    city: CityDto,
+    onClickFavoriteIcon: (Int, Boolean) -> Unit
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(smallCornerRadius),
@@ -154,6 +153,9 @@ fun CityItem(modifier: Modifier, city: CityDto) {
             defaultElevation = smallPadding
         )
     ) {
+
+        var isFavorite by remember { mutableStateOf(city.isFavorite) }
+
         Box(
             modifier = Modifier
                 .padding(mediumPadding),
@@ -172,13 +174,14 @@ fun CityItem(modifier: Modifier, city: CityDto) {
 
                 IconButton(
                     onClick = {
-
+                        onClickFavoriteIcon(city.id, !isFavorite)
+                        isFavorite = !isFavorite
                     }
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Star,
                         contentDescription = "Example Icon",
-                        tint = Color.Black
+                        tint = if (isFavorite) Color.Yellow else Color.Black
                     )
                 }
             }

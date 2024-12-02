@@ -9,4 +9,6 @@ interface HomeRepository {
     fun getCitiesPage(): Flow<PagingData<CityEntity>>
 
     fun filterByName(nameCity: String): Flow<PagingData<CityEntity>>
+
+    suspend fun setFavoriteState(cityId: Int, isFavorite: Boolean)
 }

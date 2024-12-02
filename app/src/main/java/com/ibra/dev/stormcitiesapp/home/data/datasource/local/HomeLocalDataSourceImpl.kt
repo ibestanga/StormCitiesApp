@@ -20,4 +20,8 @@ class HomeLocalDataSourceImpl(
     }
 
     override suspend fun hasCities(): Boolean = dao.getCityCount() > 0
+
+    override suspend fun setFavoriteState(cityId: Int, favorite: Boolean) {
+        dao.setFavoriteState(cityId = cityId, isFavorite = favorite)
+    }
 }

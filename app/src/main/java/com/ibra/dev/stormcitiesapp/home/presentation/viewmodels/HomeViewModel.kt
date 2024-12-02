@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.usecase.GetCitiesPagedUseCase
+import com.ibra.dev.stormcitiesapp.home.presentation.usecase.SetCityFavoriteStateUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val getCitiesUseCase: GetCitiesPagedUseCase
+    private val getCitiesUseCase: GetCitiesPagedUseCase,
+    private val setCityFavoriteStateUseCase: SetCityFavoriteStateUseCase
 ) : ViewModel() {
 
     private val _pagingDataStateFlow = MutableStateFlow<PagingData<CityDto>>(PagingData.empty())
@@ -45,6 +47,12 @@ class HomeViewModel(
                 ).collect {
                     _pagingDataStateFlow.value = it
                 }
+        }
+    }
+
+    fun setCityLikeFavorite(cityId: Int, isFavorite: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            setCityFavoriteStateUseCase.invoke(cityId, isFavorite)
         }
     }
 }

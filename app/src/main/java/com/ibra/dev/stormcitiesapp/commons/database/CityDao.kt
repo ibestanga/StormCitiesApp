@@ -12,7 +12,7 @@ interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSortedCities(cities: List<CityEntity>)
 
-    @Query("SELECT * FROM cities ORDER BY name ASC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM cities WHERE name >= 'A' AND name < 'B' ORDER BY name ASC LIMIT :limit OFFSET :offset")
     suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity>
 
     @Query("SELECT * FROM cities WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
@@ -23,4 +23,7 @@ interface CityDao {
 
     @Query("SELECT COUNT(*) FROM cities")
     suspend fun getCityCount(): Int
+
+    @Query("UPDATE cities SET isFavorite = :isFavorite WHERE id = :cityId")
+    suspend fun setFavoriteState(cityId: Int, isFavorite: Boolean)
 }

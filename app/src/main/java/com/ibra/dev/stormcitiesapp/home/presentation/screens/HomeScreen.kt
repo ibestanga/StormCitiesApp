@@ -58,8 +58,11 @@ fun HomeScreen() {
             }
         ) {
             ShowCitiesList(
-                Modifier.padding(paddingValues), cities
-            )
+                Modifier.padding(paddingValues),
+                cities
+            ) { id, isFavorite ->
+                viewModel.setCityLikeFavorite(id,isFavorite)
+            }
         }
     }
 }

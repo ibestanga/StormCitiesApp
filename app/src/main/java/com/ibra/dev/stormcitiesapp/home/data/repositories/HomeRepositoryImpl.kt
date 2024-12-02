@@ -46,4 +46,8 @@ class HomeRepositoryImpl(
             localDataSourceImpl.getCitiesByName(nameCity)
         }
     ).flow
+
+    override suspend fun setFavoriteState(cityId: Int, isFavorite: Boolean) {
+        localDataSourceImpl.setFavoriteState(cityId, isFavorite)
+    }
 }
