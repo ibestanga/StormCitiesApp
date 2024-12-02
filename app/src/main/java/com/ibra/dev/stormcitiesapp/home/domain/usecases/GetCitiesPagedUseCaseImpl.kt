@@ -20,7 +20,7 @@ class GetCitiesPagedUseCaseImpl(
         }
 
     override fun invoke(query: String, onlyFavorite: Boolean): Flow<PagingData<CityDto>> {
-        return repository.filterByName(query).map { cities ->
+        return repository.filterByName(query, onlyFavorite).map { cities ->
             cities.map { entity ->
                 entity.toDto()
             }

@@ -50,10 +50,10 @@ class HomeRepositoryImpl(
         }
     ).flow
 
-    override fun filterByName(nameCity: String): Flow<PagingData<CityEntity>> = Pager(
+    override fun filterByName(nameCity: String, onlyFavorite: Boolean): Flow<PagingData<CityEntity>> = Pager(
         config = pagingConfig,
         pagingSourceFactory = {
-            localDataSource.getCitiesByName(nameCity)
+            localDataSource.getCitiesByName(nameCity,onlyFavorite)
         }
     ).flow
 

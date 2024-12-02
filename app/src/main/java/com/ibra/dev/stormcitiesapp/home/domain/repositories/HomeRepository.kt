@@ -8,7 +8,7 @@ interface HomeRepository {
 
     fun getCitiesPage(onlyFavorite: Boolean): Flow<PagingData<CityEntity>>
 
-    fun filterByName(nameCity: String): Flow<PagingData<CityEntity>>
+    fun filterByName(nameCity: String, onlyFavorite: Boolean): Flow<PagingData<CityEntity>>
 
     suspend fun setFavoriteState(cityId: Int, isFavorite: Boolean)
 }

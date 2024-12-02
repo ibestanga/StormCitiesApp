@@ -7,7 +7,7 @@ interface HomeLocalDataSource {
 
     suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity>
 
-    fun getCitiesByName(name: String): PagingSource<Int, CityEntity>
+    fun getCitiesByName(name: String, onlyFavorite: Boolean): PagingSource<Int, CityEntity>
 
     fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity>
 

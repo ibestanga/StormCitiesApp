@@ -10,10 +10,14 @@ class HomeLocalDataSourceImpl(
     override suspend fun getPagedCities(limit: Int, offset: Int): List<CityEntity> =
         dao.getPagedCities(limit, offset)
 
-    override fun getCitiesByName(name: String): PagingSource<Int, CityEntity> =
-        dao.getCitiesByName(name)
+    override fun getCitiesByName(
+        name: String,
+        onlyFavorite: Boolean
+    ): PagingSource<Int, CityEntity> =
+        if (onlyFavorite) dao.getOnlyFavoriteCitiesByName(name) else dao.getCitiesByName(name)
 
-    override fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity> = dao.getOnLyFavoriteCity()
+    override fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity> =
+        dao.getOnlyFavoriteCities()
 
     override suspend fun insertCities(sortedCities: List<CityEntity>) {
         dao.insertCities(sortedCities)
