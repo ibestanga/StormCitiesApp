@@ -1,5 +1,6 @@
 package com.ibra.dev.stormcitiesapp.home.presentation.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.LazyPagingItems
+import com.ibra.dev.stormcitiesapp.R
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.cornerRadius_12dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_1dp
@@ -53,13 +56,16 @@ fun ShowLoading(modifier: Modifier) {
 }
 
 @Composable
-fun ShowErrorMessage(modifier: Modifier) {
+fun ShowResultMessage(
+    modifier: Modifier,
+    msg:String
+) {
     Box(
         modifier
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Ha ocurrido un error")
+        StandardText(text = msg)
     }
 }
 
@@ -70,7 +76,7 @@ fun ShowEmptyMessage(modifier: Modifier) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "No se ha encontrado elementos ")
+        Text(text = stringResource(R.string.home_not_found_element))
     }
 }
 
@@ -78,6 +84,7 @@ fun ShowEmptyMessage(modifier: Modifier) {
 fun ShowCitiesList(
     modifier: Modifier,
     cities: LazyPagingItems<CityDto>,
+    onNavigateLocationClick: (Int) -> Unit,
     onClickFavoriteIcon: (Int, Boolean) -> Unit
 
 ) {
@@ -90,11 +97,12 @@ fun ShowCitiesList(
         ) { index ->
             cities[index]?.let { city ->
                 CityItem(
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(padding_8dp),
-                    city,
-                    onClickFavoriteIcon
+                    city = city,
+                    onNavigateLocationClick = onNavigateLocationClick,
+                    onClickFavoriteIcon = onClickFavoriteIcon
                 )
             }
         }
@@ -155,10 +163,13 @@ fun OnlyFavoriteChip(onlyFavorite: Boolean, onClick: () -> Unit) {
 fun CityItem(
     modifier: Modifier,
     city: CityDto,
+    onNavigateLocationClick: (Int) -> Unit,
     onClickFavoriteIcon: (Int, Boolean) -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            onNavigateLocationClick(city.id)
+        },
         shape = RoundedCornerShape(cornerRadius_12dp),
         elevation = CardDefaults.cardElevation(defaultElevation = padding_4dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)

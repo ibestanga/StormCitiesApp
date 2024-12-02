@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -31,6 +32,12 @@ fun MapsScreen(
         viewModel.getCityById(cityId)
     }
 
+    DisposableEffect(null) {
+        onDispose {
+            viewModel.clearData()
+        }
+    }
+
     Scaffold(
         topBar = {
             MyTopBar(title = "Location", needBackNavigation = true, onBackPressClick = {
@@ -49,7 +56,7 @@ fun MyMap(modifier: Modifier, city: CityDto) {
         city.longitude
     )
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(latLng, 8f)
+        position = CameraPosition.fromLatLngZoom(latLng, 14f)
     }
     GoogleMap(
         modifier = modifier.fillMaxSize(),

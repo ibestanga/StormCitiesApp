@@ -23,10 +23,10 @@ data class CityEntity(
 )
 
 fun CityEntity.toDto() = CityDto(
-    country = country,
+    country = country.orEmpty(),
     id = id.orZero(),
-    name = name,
-    longitude = coordinate?.lon,
-    latitude = coordinate?.lat,
+    name = name.orEmpty(),
+    longitude = coordinate?.lon.orZero(),
+    latitude = coordinate?.lat.orZero(),
     isFavorite = isFavorite
 )

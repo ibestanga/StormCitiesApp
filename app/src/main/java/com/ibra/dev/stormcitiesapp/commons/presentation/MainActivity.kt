@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.ibra.dev.stormcitiesapp.commons.presentation.navigation.AppNav
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.StormCitiesAppTheme
 import com.ibra.dev.stormcitiesapp.home.presentation.screens.HomeScreen
 
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             StormCitiesAppTheme {
-                    HomeScreen()
+                    AppNav()
             }
         }
     }

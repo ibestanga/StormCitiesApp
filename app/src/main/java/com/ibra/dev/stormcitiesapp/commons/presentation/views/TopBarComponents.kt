@@ -29,7 +29,7 @@ fun MyTopBar(
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = "icon",
-                        tint = Color.White
+                        tint = Color.Black
                     )
                 }
             }

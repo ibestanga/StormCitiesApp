@@ -10,9 +10,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ibra.dev.stormcitiesapp.R
+import com.ibra.dev.stormcitiesapp.commons.presentation.navigation.LocationScreenDestination
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_24dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_8dp
@@ -21,7 +25,7 @@ import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     val viewModel = koinViewModel<HomeViewModel>()
     val cities = viewModel.pagingDataStateFlow.collectAsLazyPagingItems()
 
@@ -53,15 +57,24 @@ fun HomeScreen() {
                 ShowLoading(Modifier.padding(paddingValues))
             },
             showErrorState = {
-                ShowErrorMessage(Modifier.padding(paddingValues))
+                ShowResultMessage(
+                    Modifier.padding(paddingValues),
+                    msg = stringResource(R.string.home_generic_error_msg)
+                )
             },
             showEmptyList = {
-                ShowEmptyMessage(Modifier.padding(paddingValues))
+                ShowResultMessage(
+                    Modifier.padding(paddingValues),
+                    msg = stringResource(R.string.home_not_found_element)
+                )
             }
         ) {
             ShowCitiesList(
-                Modifier.padding(paddingValues),
-                cities
+                modifier = Modifier.padding(paddingValues),
+                cities = cities,
+                onNavigateLocationClick = { cityId ->
+                    navController.navigate(LocationScreenDestination(cityId))
+                }
             ) { id, isFavorite ->
                 viewModel.setCityLikeFavorite(id, isFavorite)
             }

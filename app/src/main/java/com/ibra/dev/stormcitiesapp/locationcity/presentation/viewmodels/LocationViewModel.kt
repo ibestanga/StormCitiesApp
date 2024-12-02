@@ -23,4 +23,8 @@ class LocationViewModel(
             )
         }
     }
+
+    fun clearData() {
+        _locationsUiStateFlow.value = LocationUiState()
+    }
 }

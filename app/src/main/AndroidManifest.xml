@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StormCitiesApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDk2W7fkybDzT2-ZODymkEyT4uzfGAOUrc" />
+
         <activity
             android:name=".commons.presentation.MainActivity"
             android:exported="true"
@@ -27,5 +32,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

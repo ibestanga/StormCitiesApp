@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">StormCitiesApp</string>
     <string name="base_url">https://gist.githubusercontent.com/</string>
+    <string name="home_not_found_element">"No se ha encontrado elementos "</string>
+    <string name="home_generic_error_msg">"Ha Ocurrido un error"</string>
 </resources>
