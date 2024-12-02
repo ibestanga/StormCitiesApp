@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.CameraPosition
@@ -14,18 +16,29 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ibra.dev.stormcitiesapp.commons.presentation.views.MyTopBar
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
+import com.ibra.dev.stormcitiesapp.locationcity.presentation.viewmodels.LocationViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MapsScreen(
     navController: NavController,
     cityId: Int
 ) {
+    val viewModel = koinViewModel<LocationViewModel>()
+    val city = viewModel.locationsUiStateFlow.collectAsState().value.city
+
+    LaunchedEffect(null) {
+        viewModel.getCityById(cityId)
+    }
+
     Scaffold(
         topBar = {
-            MyTopBar(title = "Location", needBackNavigation = true, onBackPressClick = {})
+            MyTopBar(title = "Location", needBackNavigation = true, onBackPressClick = {
+                navController.popBackStack()
+            })
         }
     ) {
-        MyMap(Modifier.padding(it), CityDto())
+        city?.let { city -> MyMap(Modifier.padding(it), city) }
     }
 }
 
@@ -44,8 +57,8 @@ fun MyMap(modifier: Modifier, city: CityDto) {
     ) {
         Marker(
             state = MarkerState(position = latLng),
-            title = countryName,
-            snippet = "Pais de origen: $countryName"
+            title = city.name,
+            snippet = "Pais de origen: ${city.country}"
         )
     }
 }
