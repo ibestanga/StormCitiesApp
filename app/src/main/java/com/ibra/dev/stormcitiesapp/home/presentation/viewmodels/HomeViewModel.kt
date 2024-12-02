@@ -20,10 +20,6 @@ class HomeViewModel(
     private val _pagingDataStateFlow = MutableStateFlow<PagingData<CityDto>>(PagingData.empty())
     val pagingDataStateFlow: StateFlow<PagingData<CityDto>> = _pagingDataStateFlow
 
-
-    private val _isLoginStateFlow = MutableStateFlow(false)
-    val isLoginStateFlow: StateFlow<Boolean> get() = _isLoginStateFlow
-
     fun getCitiesList() {
         viewModelScope.launch(Dispatchers.IO) {
             getCitiesUseCase.invoke()

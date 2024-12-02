@@ -7,19 +7,22 @@ import com.ibra.dev.stormcitiesapp.home.data.datasource.local.HomeLocalDataSourc
 import com.ibra.dev.stormcitiesapp.home.data.datasource.remote.HomeRemoteDataSource
 import com.ibra.dev.stormcitiesapp.home.data.entities.CityEntity
 import com.ibra.dev.stormcitiesapp.home.data.repositories.HomeRepositoryImpl.Companion.TAG
+import kotlinx.coroutines.CompletableDeferred
 import retrofit2.HttpException
 
 class CityPagingSource(
     private val localDataSource: HomeLocalDataSource,
     private val remoteLocalDataSource: HomeRemoteDataSource,
 ) : PagingSource<Int, CityEntity>() {
+    private val promise = CompletableDeferred<Unit>()
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CityEntity> {
         return try {
             val offset = params.key ?: 0
             val limit = params.loadSize
 
-            fetchRemoteIfNecessary()
+            promise.complete(fetchRemoteIfNecessary())
+            promise.await()
             val cities = localDataSource.getPagedCities(limit, offset)
 
             LoadResult.Page(
