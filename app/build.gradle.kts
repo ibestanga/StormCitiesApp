@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.compose.maps)
     implementation(libs.play.services.maps)
+    implementation(libs.androidx.constraintlayout.compose)
 
     //Koin
     implementation(libs.koin.android)

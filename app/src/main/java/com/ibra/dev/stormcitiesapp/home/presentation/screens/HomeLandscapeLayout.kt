@@ -11,12 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibra.dev.stormcitiesapp.R
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_32dp
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_36dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.views.MyMap
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
@@ -29,15 +29,19 @@ fun HomeLandscapeLayout(
 
     var lastCityPressed: CityDto? by remember { mutableStateOf(null) }
 
-    Column(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = padding_16dp,
-                start = padding_32dp,
-                end = padding_36dp,
-                bottom = padding_16dp
+                top = LocalConfiguration.current.screenWidthDp.dp * 0.03f,
+                bottom = LocalConfiguration.current.screenWidthDp.dp * 0.02f,
+                start = LocalConfiguration.current.screenWidthDp.dp * 0.05f,
+                end = LocalConfiguration.current.screenWidthDp.dp * 0.05f
             )
+    ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         SearchBar(
             onOnlyFavorite = { onlyFavorite ->
@@ -88,4 +92,7 @@ fun HomeLandscapeLayout(
             }
         }
     }
+
+    }
+
 }
