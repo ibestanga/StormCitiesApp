@@ -1,4 +1,4 @@
-package com.ibra.dev.stormcitiesapp.commons.ui.views
+package com.ibra.dev.stormcitiesapp.commons.presentation.views
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

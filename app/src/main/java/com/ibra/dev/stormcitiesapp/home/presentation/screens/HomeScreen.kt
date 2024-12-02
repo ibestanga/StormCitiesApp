@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_24dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_16dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_8dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_24dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_8dp
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel

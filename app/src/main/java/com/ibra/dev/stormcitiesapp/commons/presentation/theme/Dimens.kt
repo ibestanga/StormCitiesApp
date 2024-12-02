@@ -1,7 +1,6 @@
-package com.ibra.dev.stormcitiesapp.commons.ui.theme
+package com.ibra.dev.stormcitiesapp.commons.presentation.theme
 
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 val padding_1dp = 1.dp
 val padding_4dp = 4.dp

@@ -33,12 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.paging.compose.LazyPagingItems
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.cornerRadius_12dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_16dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_1dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_4dp
-import com.ibra.dev.stormcitiesapp.commons.ui.theme.padding_8dp
-import com.ibra.dev.stormcitiesapp.commons.ui.views.StandardText
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.cornerRadius_12dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_1dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_4dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_8dp
+import com.ibra.dev.stormcitiesapp.commons.presentation.views.StandardText
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 
 
