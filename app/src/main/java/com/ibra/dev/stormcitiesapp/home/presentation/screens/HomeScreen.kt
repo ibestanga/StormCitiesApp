@@ -1,27 +1,14 @@
 package com.ibra.dev.stormcitiesapp.home.presentation.screens
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ibra.dev.stormcitiesapp.R
 import com.ibra.dev.stormcitiesapp.commons.presentation.navigation.LocationScreenDestination
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_24dp
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
-import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_8dp
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -30,7 +17,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(navController: NavHostController) {
     val configuration = LocalConfiguration.current
     val viewModel = koinViewModel<HomeViewModel>()
-
+    val cities = viewModel.pagingDataStateFlow.collectAsLazyPagingItems()
 
     LaunchedEffect(null) {
         viewModel.getCitiesList()
@@ -38,17 +25,48 @@ fun HomeScreen(navController: NavHostController) {
 
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> HomePortraitLayout(
-            navController = navController,
-            viewModel = viewModel
+            onOnlyFavorite = { onlyFavorite ->
+                viewModel.getCitiesList(onlyFavorite)
+            },
+            onSearchUser = { query, onlyFavorite ->
+                viewModel.filterByName(query, onlyFavorite)
+            },
+            onNavigateLocationClick = { city ->
+                navController.navigate(LocationScreenDestination(city.id))
+            },
+            onClickFavoriteIcon = { id, isFavorite ->
+                viewModel.setCityLikeFavorite(id, isFavorite)
+            },
+            cities
         )
 
         Configuration.ORIENTATION_LANDSCAPE -> HomeLandscapeLayout(
-            viewModel = viewModel
+            cities = cities,
+            onOnlyFavorite = { onlyFavorite ->
+                viewModel.getCitiesList(onlyFavorite)
+            },
+            onSearchUser = { query, onlyFavorite ->
+                viewModel.filterByName(query, onlyFavorite)
+            },
+            onClickFavoriteIcon = { id, isFavorite ->
+                viewModel.setCityLikeFavorite(id, isFavorite)
+            }
         )
 
         else -> HomePortraitLayout(
-            navController = navController,
-            viewModel = viewModel
+            onOnlyFavorite = { onlyFavorite ->
+                viewModel.getCitiesList(onlyFavorite)
+            },
+            onSearchUser = { query, onlyFavorite ->
+                viewModel.filterByName(query, onlyFavorite)
+            },
+            onNavigateLocationClick = { city ->
+                navController.navigate(LocationScreenDestination(city.id))
+            },
+            onClickFavoriteIcon = { id, isFavorite ->
+                viewModel.setCityLikeFavorite(id, isFavorite)
+            },
+            cities
         )
     }
 }

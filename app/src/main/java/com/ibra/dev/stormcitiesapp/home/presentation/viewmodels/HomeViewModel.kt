@@ -3,7 +3,6 @@ package com.ibra.dev.stormcitiesapp.home.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 import com.ibra.dev.stormcitiesapp.home.presentation.usecase.GetCitiesPagedUseCase
 import com.ibra.dev.stormcitiesapp.home.presentation.usecase.SetCityFavoriteStateUseCase

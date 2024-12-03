@@ -10,21 +10,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import com.ibra.dev.stormcitiesapp.R
-import com.ibra.dev.stormcitiesapp.commons.presentation.navigation.LocationScreenDestination
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_16dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_32dp
 import com.ibra.dev.stormcitiesapp.commons.presentation.theme.padding_8dp
-import com.ibra.dev.stormcitiesapp.home.presentation.viewmodels.HomeViewModel
+import com.ibra.dev.stormcitiesapp.home.domain.models.CityDto
 
 @Composable
 fun HomePortraitLayout(
-    navController: NavHostController,
-    viewModel: HomeViewModel,
+    onOnlyFavorite: (Boolean) -> Unit,
+    onSearchUser: (String, Boolean) -> Unit,
+    onNavigateLocationClick: (CityDto) -> Unit,
+    onClickFavoriteIcon: (Int, Boolean) -> Unit,
+    cities: LazyPagingItems<CityDto>
 ) {
-    val cities = viewModel.pagingDataStateFlow.collectAsLazyPagingItems()
 
     Scaffold(
         modifier = Modifier
@@ -35,10 +35,10 @@ fun HomePortraitLayout(
                 Spacer(Modifier.height(padding_32dp))
                 SearchBar(
                     onOnlyFavorite = { onlyFavorite ->
-                        viewModel.getCitiesList(onlyFavorite)
+                        onOnlyFavorite(onlyFavorite)
                     }
                 ) { query, onlyFavorite ->
-                    viewModel.filterByName(query, onlyFavorite)
+                    onSearchUser(query, onlyFavorite)
                 }
                 Spacer(Modifier.height(padding_16dp))
             }
@@ -66,10 +66,10 @@ fun HomePortraitLayout(
                 modifier = Modifier.padding(paddingValues),
                 cities = cities,
                 onNavigateLocationClick = { city ->
-                    navController.navigate(LocationScreenDestination(city.id))
+                    onNavigateLocationClick(city)
                 }
             ) { id, isFavorite ->
-                viewModel.setCityLikeFavorite(id, isFavorite)
+                onClickFavoriteIcon(id, isFavorite)
             }
         }
     }
