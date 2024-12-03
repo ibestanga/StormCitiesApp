@@ -75,7 +75,6 @@ fun ShowCitiesList(
     cities: LazyPagingItems<CityDto>,
     onNavigateLocationClick: (CityDto) -> Unit,
     onClickFavoriteIcon: (Int, Boolean) -> Unit
-
 ) {
     LazyColumn(
         modifier
@@ -178,11 +177,15 @@ fun CityItem(
             ) {
 
                 Column {
-                    StandardText("${city.name}, ${city.country}")
+                    StandardText(
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        text = "${city.name}, ${city.country}",
+                    )
                     Spacer(Modifier.height(padding_1dp))
                     StandardText(
-                        "Lat: ${city.latitude}, Long${city.longitude}",
-                        style = MaterialTheme.typography.bodyLarge
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        text = "Lat: ${city.latitude}, Long${city.longitude}",
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
 

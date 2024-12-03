@@ -25,7 +25,6 @@ class HomeViewModel(
     fun getCitiesList(onlyFavorite: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             getCitiesUseCase.invoke(onlyFavorite)
-                .cachedIn(viewModelScope)
                 .stateIn(
                     scope = viewModelScope,
                     started = SharingStarted.Lazily,
@@ -39,7 +38,6 @@ class HomeViewModel(
     fun filterByName(query: String, onlyFavorite: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             getCitiesUseCase.invoke(query, onlyFavorite)
-                .cachedIn(viewModelScope)
                 .stateIn(
                     scope = viewModelScope,
                     started = SharingStarted.Lazily,
