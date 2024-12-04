@@ -16,14 +16,12 @@ class HomeRepositoryImpl(
 ) : HomeRepository {
     companion object {
         const val MAX_ITEMS = 10
-        const val PREFETCH_ITEMS = 3
     }
 
     private val pagingConfig by lazy {
         PagingConfig(
             pageSize = MAX_ITEMS,
             enablePlaceholders = false,
-            prefetchDistance = PREFETCH_ITEMS
         )
     }
 
@@ -50,10 +48,13 @@ class HomeRepositoryImpl(
         }
     ).flow
 
-    override fun filterByName(nameCity: String, onlyFavorite: Boolean): Flow<PagingData<CityEntity>> = Pager(
+    override fun filterByName(
+        nameCity: String,
+        onlyFavorite: Boolean
+    ): Flow<PagingData<CityEntity>> = Pager(
         config = pagingConfig,
         pagingSourceFactory = {
-            localDataSource.getCitiesByName(nameCity,onlyFavorite)
+            localDataSource.getCitiesByName(nameCity, onlyFavorite)
         }
     ).flow
 

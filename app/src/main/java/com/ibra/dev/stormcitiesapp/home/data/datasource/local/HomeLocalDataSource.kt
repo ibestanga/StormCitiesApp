@@ -11,7 +11,7 @@ interface HomeLocalDataSource {
 
     fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity>
 
-    suspend fun insertCities(sortedCities: List<CityEntity>)
+    suspend fun insertCities(cities: List<CityEntity>)
 
     suspend fun hasCities(): Boolean
 

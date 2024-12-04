@@ -19,8 +19,8 @@ class HomeLocalDataSourceImpl(
     override fun getOnlyFavoriteCities(): PagingSource<Int, CityEntity> =
         dao.getOnlyFavoriteCities()
 
-    override suspend fun insertCities(sortedCities: List<CityEntity>) {
-        dao.insertCities(sortedCities)
+    override suspend fun insertCities(cities: List<CityEntity>) {
+        dao.insertCities(cities)
     }
 
     override suspend fun hasCities(): Boolean = dao.getCityCount() > 0
