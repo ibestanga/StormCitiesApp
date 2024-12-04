@@ -20,6 +20,12 @@ android {
         }
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         applicationId = "com.ibra.dev.stormcitiesapp"
         minSdk = 24
@@ -107,4 +113,7 @@ dependencies {
     androidTestImplementation(libs.androidx.paging.testing)
     androidTestImplementation(libs.androidx.junit)
     testImplementation(libs.turbine)
+    testImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.testing)
+    testImplementation(libs.robolectric)
 }
